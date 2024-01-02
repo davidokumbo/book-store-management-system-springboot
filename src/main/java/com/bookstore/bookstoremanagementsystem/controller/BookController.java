@@ -8,13 +8,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bookstore.bookstoremanagementsystem.model.Book;
+import com.bookstore.bookstoremanagementsystem.model.MyBookList;
 import com.bookstore.bookstoremanagementsystem.service.BookService;
+import com.bookstore.bookstoremanagementsystem.service.MyBookService;
+
+import jakarta.websocket.server.PathParam;
 
 @Controller
 public class BookController {
 
     @Autowired
     BookService bService;
+    @Autowired
+    MyBookService mybookservice;
 
     
 
@@ -40,8 +46,15 @@ public class BookController {
     }
 
     @GetMapping("my_books")
-    public String mybooks(){
-        return "mybookspage";
+    public ModelAndView mybookspage(){
+       List<MyBookList> mybooks = mybookservice.getmybooks();
+        return new ModelAndView("mybookspage","mybooks",mybooks);
+    }
+
+    @GetMapping("my_bookid")
+    public String mybooks(@RequestParam Long bookid){
+        bService.getbook(bookid);
+        return "redirect:/available_books";
     }
 
     @PostMapping("/save")
@@ -50,4 +63,19 @@ public class BookController {
         return "redirect:/available_books";
         
     }
+
+    @GetMapping("removefrommylist")
+    public String removebook(@RequestParam Long id){
+         mybookservice.removebook(id);
+
+         return "redirect:/my_books";
+
+    }
+    @GetMapping("deletebook")
+    public String deletebook(@RequestParam Long bookid){
+        bService.deletebook(bookid);
+       return "redirect:/available_books";
+    }
+
+   
 }

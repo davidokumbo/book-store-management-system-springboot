@@ -48,14 +48,14 @@
                 <th scope="col">action</th>
             </thead>
             <tbody>
-              <!-- <tr th:each="book: ${booklist}">
+              <tr th:each="book: ${mybooks}">
                 <th scope="row" th:text="${book.id}" ></th>
                 <td th:text="${book.name}"></td>
                 <td th:text="${book.author}"></td>
                 <td th:text="${book.price}"></td>
                 <td>
-                    <a href="" class="btn btn-secondary">Add to my books</a>
-                </td> -->
+                    <a th:href="@{removefrommylist(id=${book.id})}" class="btn btn-primary">Remove From List</a>
+                </td>
               </tr>
              
             </tbody>
